@@ -1,0 +1,26 @@
+<!-- <mat-form-field appearance="standard">
+  <mat-label>Filter</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="E.g. Qui Est Ese..." #input>
+</mat-form-field> -->
+
+<app-filter (onApplyFilter)="applyFilter($event)"></app-filter>
+
+
+<mat-grid-list [cols]="breakpoint" rowHeight="4:5" (window:resize)="onResize($event)" >
+  <mat-grid-tile *ngFor="let data of dataSourcePaged | appFilter: searchInput">
+    <div>
+      <mat-card class="card">
+        <mat-card-subtitle><b>{{data.id}}:</b> {{data.title | titlecase}}</mat-card-subtitle>
+        <img mat-card-sm-image src="{{data.thumbnailUrl}}" (click)="onViewImage(data)">
+
+      </mat-card>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<mat-paginator
+  [length]="length"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onPageChange($event)">
+</mat-paginator>

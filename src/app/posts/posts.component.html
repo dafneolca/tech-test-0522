@@ -1,7 +1,4 @@
-<mat-form-field appearance="standard">
-  <mat-label>Filter</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="E.g. Qui Est Ese..." #input>
-</mat-form-field>
+<app-filter (onApplyFilter)="applyFilter($event)"></app-filter>
 
 <div class="mat-elevation-z8">
 
