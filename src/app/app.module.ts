@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select'
 
 // Services
 import { PostsService } from './services/posts.service'
@@ -31,9 +32,6 @@ import { PhotosComponent } from './photos/photos.component';
 import { ImageModalComponent } from './image-modal/image-modal.component';
 import { FilterComponent } from './filter/filter.component';
 
-//Pipes
-import { FilterPipe } from './pipes/filter.pipe';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +39,6 @@ import { FilterPipe } from './pipes/filter.pipe';
     PhotosComponent,
     ImageModalComponent,
     FilterComponent,
-    FilterPipe
   ],
   imports: [
     BrowserModule,
@@ -59,7 +56,8 @@ import { FilterPipe } from './pipes/filter.pipe';
     MatInputModule,
     MatIconModule,
     MatGridListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule
   ],
   providers: [PostsService],
   bootstrap: [AppComponent]

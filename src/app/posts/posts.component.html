@@ -1,7 +1,5 @@
 <app-filter (onApplyFilter)="applyFilter($event)"></app-filter>
 
-<div class="mat-elevation-z8">
-
   <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
 
     <ng-container matColumnDef="userId" class="minWidth">
@@ -32,5 +30,3 @@
 
   <mat-paginator [pageSize]="10" length="dataSize" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
   </mat-paginator>
-
-</div>

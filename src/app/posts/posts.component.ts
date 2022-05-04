@@ -42,6 +42,4 @@ export class PostsComponent implements AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
-
 }

@@ -7,13 +7,17 @@ import { PhotosService } from '../services/photos.service';
 import { Photo } from './photo.interface';
 import { ImageModalComponent } from '../image-modal/image-modal.component';
 
-
+export interface SortOptions {
+  value: string,
+  viewValue: string
+}
 
 @Component({
   selector: 'app-photos',
   templateUrl: './photos.component.html',
   styleUrls: ['./photos.component.css']
 })
+
 export class PhotosComponent implements AfterViewInit {
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
@@ -21,16 +25,24 @@ export class PhotosComponent implements AfterViewInit {
 
   dataSource: Photo[] = [];
   dataSourcePaged: Photo[] = [];
+  
+  // Pagination
   dataSize: number;
-
   length: number = 0;
   pageSize: number = 50;
   pageSizeOptions: number[] = [10, 50, 100, 150]
 
+  // Filter
+  // searchInput: string = '';
+
   // For responsive style
   breakpoint: number = 3;
 
-  searchInput: string = '';
+  sortOptions: SortOptions[] = [
+    {value: 'title', viewValue: 'Name ASC'},
+    {value: 'id', viewValue: 'ID ASC'},
+    {value: 'clear', viewValue: 'Clear'},
+  ];
 
   constructor(private photosService: PhotosService, public dialog: MatDialog) { }
 
@@ -48,6 +60,7 @@ export class PhotosComponent implements AfterViewInit {
     })
   }
 
+  // Pagination
   onPageChange(event){
     let startIndex = event.pageIndex * event.pageSize;
     let endIndex = startIndex + event.pageSize;
@@ -74,13 +87,28 @@ export class PhotosComponent implements AfterViewInit {
   applyFilter(filter){
     const filterValue = (filter.target as HTMLInputElement).value;
     console.log('filter value', filterValue.trim())
-    const newData = this.dataSource.filter(photo=> photo.title == filterValue)
+    const newData = this.dataSource.filter((photo)=> photo.title == filterValue)
+  }
 
-    console.log('new data: ', newData)
-    // this.dataSource.filter = filterValue.trim().toLowerCase();
-    // if (this.dataSource.paginator) {
-    //   this.dataSource.paginator.firstPage();
-    // }
+  selectedValue(event){
+    this.onSort(event.value)
+  }
+
+  onSort(sortType?){
+    let sorted;
+    switch (sortType) {
+      case 'id':
+        sorted = this.dataSource.sort((a, b) => (a.id < b.id) ? -1 : 1)
+        this.dataSourcePaged = sorted.slice(0, 50);
+        break;
+      case 'title':
+        sorted = this.dataSource.sort((a, b) => (a.title < b.title) ? -1 : 1)
+        this.dataSourcePaged = sorted.slice(0, 50);
+        break;
+      default:
+        this.getData();
+    }
+
   }
 
 
