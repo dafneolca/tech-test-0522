@@ -1,0 +1,9 @@
+.main {
+  width: 80vw;
+  margin: auto;
+}
+
+.navigation{
+  display: flex;
+  align-items: center;
+}

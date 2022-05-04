@@ -1,19 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { PostsService } from '../services/posts.service';
+import { Post } from './post.interface';
 
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 
-export interface Post {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-}
-
-const ELEMENT_DATA: Post[] = [
-  // {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-];
 
 
 @Component({
@@ -21,21 +13,37 @@ const ELEMENT_DATA: Post[] = [
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.css']
 })
-export class PostsComponent implements OnInit {
+export class PostsComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['user-id', 'id', 'title', 'body'];
-  dataSource;
+  displayedColumns: string[] = ['userId', 'id', 'title'];
+  dataSource: MatTableDataSource<Post> = new MatTableDataSource<Post>();
+  dataSize: number;
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
-  // @ViewChild('paginator') paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public postsService: PostsService) { }
 
-  ngOnInit(): void {
-    this.postsService.getPosts().subscribe((res)=> {
-      console.log('res: ', res)
-      this.dataSource = new MatTableDataSource(res);
+  ngAfterViewInit() {
+    this.getData();
+  }
+
+  getData(){
+    this.postsService.getPosts().subscribe((posts: Post[])=> {
+      this.dataSource = new MatTableDataSource(posts);
       this.dataSource.sort = this.sort;
+      this.dataSize = posts.length;
+      this.dataSource.paginator = this.paginator;
     })
   }
+
+  applyFilter(filter){
+    const filterValue = (filter.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+
 }

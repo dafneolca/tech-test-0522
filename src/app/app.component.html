@@ -1,9 +1,13 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <div>
+    <div class="navigation">
+      <a mat-button [routerLink]="'/'"> <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+      </a>
       <a mat-button [routerLink]="'/posts'"> <h1>Posts </h1></a>
       <a mat-button [routerLink]="'/posts'"> <h1>Photos </h1></a>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
-<router-outlet></router-outlet>
+<div class="main">
+  <router-outlet></router-outlet>
+</div>
