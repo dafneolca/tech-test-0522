@@ -3,9 +3,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 
-import { PhotosService } from '../services/photos.service';
+import { PhotosService } from '../../services/photos.service';
 import { Photo } from './photo.interface';
-import { ImageModalComponent } from '../image-modal/image-modal.component';
+import { ImageModalComponent } from '../../image-modal/image-modal.component';
 
 export interface SortOptions {
   value: string,
@@ -31,9 +31,6 @@ export class PhotosComponent implements AfterViewInit {
   length: number = 0;
   pageSize: number = 50;
   pageSizeOptions: number[] = [10, 50, 100, 150]
-
-  // Filter
-  // searchInput: string = '';
 
   // For responsive style
   breakpoint: number = 3;
@@ -70,7 +67,7 @@ export class PhotosComponent implements AfterViewInit {
     this.dataSourcePaged = this.dataSource.slice(startIndex, endIndex);
   }
 
-  //to adjust to screen size
+  // Responsive size
   onResize(event) { 
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 3;
   }
@@ -84,10 +81,16 @@ export class PhotosComponent implements AfterViewInit {
     });
   }
 
-  applyFilter(filter){
-    const filterValue = (filter.target as HTMLInputElement).value;
-    console.log('filter value', filterValue.trim())
-    const newData = this.dataSource.filter((photo)=> photo.title == filterValue)
+  applyFilter(filterVal){
+    if (!filterVal){
+      return this.getData();
+    }
+    const filterValue = filterVal;
+    const newData = this.dataSource.filter((photo)=>{
+       return photo.title.includes(filterValue)
+    })
+    this.dataSource = newData;
+    this.dataSourcePaged = this.getPaginatedData(this.dataSource);
   }
 
   selectedValue(event){
@@ -99,17 +102,18 @@ export class PhotosComponent implements AfterViewInit {
     switch (sortType) {
       case 'id':
         sorted = this.dataSource.sort((a, b) => (a.id < b.id) ? -1 : 1)
-        this.dataSourcePaged = sorted.slice(0, 50);
+        this.dataSourcePaged = this.getPaginatedData(sorted);
         break;
       case 'title':
         sorted = this.dataSource.sort((a, b) => (a.title < b.title) ? -1 : 1)
-        this.dataSourcePaged = sorted.slice(0, 50);
+        this.dataSourcePaged = this.getPaginatedData(sorted);
         break;
       default:
         this.getData();
     }
-
   }
 
-
+  getPaginatedData(dataArr){
+    return dataArr.slice(0, 50);
+  }
 }

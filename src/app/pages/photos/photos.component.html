@@ -1,13 +1,14 @@
-<app-filter (onApplyFilter)="applyFilter($event)"></app-filter>
-
-<mat-form-field appearance="fill">
-  <mat-label>Sort</mat-label>
-  <mat-select>
-    <mat-option *ngFor="let sort of sortOptions" (click)="selectedValue(sort)" [value]="sort.value">
-      {{sort.viewValue}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="sort-filter-actions">
+  <mat-form-field appearance="standard">
+    <mat-label>Sort</mat-label>
+    <mat-select class="sort-dropdown" >
+      <mat-option *ngFor="let sort of sortOptions" (click)="selectedValue(sort)" [value]="sort.value">
+        {{sort.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <app-filter (onApplyFilter)="applyFilter($event)"></app-filter>
+</div>
 
 <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)" rowHeight="270px" >
   <mat-grid-tile *ngFor="let data of dataSourcePaged">

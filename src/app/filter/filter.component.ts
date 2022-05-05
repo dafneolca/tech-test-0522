@@ -7,10 +7,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class FilterComponent {
 
+  inputValue: string;
+
   @Output() onApplyFilter = new EventEmitter<string>();
 
-  applyFilter(value: string) {
-    this.onApplyFilter.emit(value);
+  applyFilter() {
+    this.onApplyFilter.emit(this.inputValue);
   }
 
 }

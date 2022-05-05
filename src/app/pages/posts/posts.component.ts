@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { PostsService } from '../services/posts.service';
+import { PostsService } from '../../services/posts.service';
 import { Post } from './post.interface';
 
 import { MatPaginator } from '@angular/material/paginator';
@@ -35,9 +35,8 @@ export class PostsComponent implements AfterViewInit {
     })
   }
 
-  applyFilter(filter){
-    const filterValue = (filter.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(filterVal){
+    this.dataSource.filter = filterVal.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

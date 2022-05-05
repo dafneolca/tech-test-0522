@@ -8,6 +8,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { FormsModule } from '@angular/forms'; 
+
 // Material Design Modules
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,8 +29,8 @@ import { MatSelectModule } from '@angular/material/select'
 import { PostsService } from './services/posts.service'
 
 // Components
-import { PostsComponent } from './posts/posts.component';
-import { PhotosComponent } from './photos/photos.component';
+import { PostsComponent } from './pages/posts/posts.component';
+import { PhotosComponent } from './pages/photos/photos.component';
 import { ImageModalComponent } from './image-modal/image-modal.component';
 import { FilterComponent } from './filter/filter.component';
 
@@ -45,6 +47,7 @@ import { FilterComponent } from './filter/filter.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     MatToolbarModule,
     MatButtonModule,
     MatTableModule,

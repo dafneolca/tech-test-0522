@@ -1,5 +1,21 @@
 .mat-form-field {
   font-size: 14px;
-  width: 100%;
   color:white;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position:relative;
+}
+
+.white-icon {
+  color: white;
+}
+
+@media (max-width: 530px){
+  mat-form-field{
+    width: 100%
+  }
 }
