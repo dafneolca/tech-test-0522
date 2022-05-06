@@ -11,3 +11,12 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background: var(--bg-pink);
 }
+
+.main {
+  width: 80vw;
+  margin: auto;
+}
+
+.mat-paginator-container{
+  padding: 20px !important;
+}

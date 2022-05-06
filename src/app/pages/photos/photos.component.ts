@@ -30,7 +30,7 @@ export class PhotosComponent implements AfterViewInit {
   dataSize: number;
   length: number = 0;
   pageSize: number = 50;
-  pageSizeOptions: number[] = [10, 50, 100, 150]
+  pageSizeOptions: number[] = [10, 50, 100, 150];
 
   // For responsive style
   breakpoint: number = 3;

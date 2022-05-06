@@ -1,12 +1,20 @@
-.demo-table {
-  width: 100%;
-}
-
-.minWidth td{
+.mat-column-userId, .mat-column-id {
+  white-space: nowrap;
   min-width: 10vw;
 }
 
-.mat-column-userId, .mat-column-id {
-  white-space: nowrap;
-  min-width: 5vw;
+.quote-title-text {
+  text-align: center;
+}
+
+.mat-cell{
+  padding: 30px 0;
+}
+
+.mat-divider {
+  padding: 10px 0;
+}
+
+.mat-header-cell {
+  font-size: 20px;
 }

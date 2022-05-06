@@ -15,7 +15,11 @@ export class PostsComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['userId', 'id', 'title'];
   dataSource: MatTableDataSource<Post> = new MatTableDataSource<Post>();
+
+  // Pagination
   dataSize: number;
+  pageSize: number = 10;
+  pageSizeOptions: number[] = [10, 50, 100];
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;

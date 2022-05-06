@@ -1,10 +1,13 @@
+<div class="main">
 <app-filter (onApplyFilter)="applyFilter($event)"></app-filter>
 
-  <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+  <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 table">
 
     <ng-container matColumnDef="userId" class="minWidth">
       <th mat-header-cell mat-sort-header *matHeaderCellDef> User ID </th>
-      <td mat-cell *matCellDef="let element"> {{element.userId}} </td>
+      <td mat-cell *matCellDef="let element"> 
+        {{element.userId}}
+       </td>
     </ng-container>
 
     <ng-container matColumnDef="id" class="minWidth">
@@ -15,18 +18,23 @@
     <ng-container matColumnDef="title">
       <th mat-header-cell mat-sort-header *matHeaderCellDef> Post </th>
       <td mat-cell *matCellDef="let element"> 
-        <h3>
+        <p class="quote-title-text">
           {{element.title | titlecase}} 
-        </h3>
-        <blockquote>
+        </p>
+        <mat-divider></mat-divider>
+        <p>
           {{element.body | titlecase}}
-        </blockquote>
+        </p>
       </td>
     </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+</div>
 
-  <mat-paginator [pageSize]="10" length="dataSize" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
-  </mat-paginator>
+<mat-paginator
+  [pageSize]="pageSize"
+  [length]="dataSize"
+  [pageSizeOptions]="pageSizeOptions"
+  showFirstLastButtons>
+</mat-paginator>
