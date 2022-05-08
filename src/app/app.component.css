@@ -1,0 +1,13 @@
+.navigation{
+  display: flex;
+  align-items: center;
+}
+
+.active-route {
+  color: var(--bg-pink);
+}
+
+.no-results {
+  color:white;
+  text-align: center;
+}

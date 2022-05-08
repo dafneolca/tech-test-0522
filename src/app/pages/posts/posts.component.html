@@ -1,0 +1,43 @@
+<div class="main">
+<app-filter (onApplyFilter)="applyFilter($event)"></app-filter>
+
+<div *ngIf="!dataSource.filteredData.length && isFiltered" class="no-results">
+  <app-no-results></app-no-results>
+</div>
+
+  <table *ngIf="dataSource.filteredData.length" mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 table">
+    <ng-container matColumnDef="userId" class="minWidth">
+      <th mat-header-cell mat-sort-header *matHeaderCellDef> User ID </th>
+      <td mat-cell *matCellDef="let element"> 
+        {{element.userId}}
+       </td>
+    </ng-container>
+
+    <ng-container matColumnDef="id" class="minWidth">
+      <th mat-header-cell mat-sort-header *matHeaderCellDef> Other ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell mat-sort-header *matHeaderCellDef> Post </th>
+      <td mat-cell *matCellDef="let element"> 
+        <p class="quote-title-text">
+          {{element.title | titlecase}} 
+        </p>
+        <mat-divider></mat-divider>
+        <p>
+          {{element.body | titlecase}}
+        </p>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+
+<mat-paginator
+  [pageSize]="pageSize"
+  [length]="dataSize"
+  [pageSizeOptions]="pageSizeOptions"
+  showFirstLastButtons>
+</mat-paginator>

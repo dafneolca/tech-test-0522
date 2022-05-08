@@ -1,0 +1,12 @@
+<div class="filter-container">
+  <mat-form-field class="input" appearance="standard">
+    <input matInput (keyup.enter)="applyFilter()" placeholder="Search..." [(ngModel)]="inputValue">
+  </mat-form-field>
+  <button *ngIf="inputValue" class="close-button" matSuffix mat-icon-button aria-label="clear" (click)="inputValue=''; applyFilter()">
+    <mat-icon class="white-icon">close</mat-icon>
+  </button>
+
+  <button class="search-button" (click)="applyFilter()" matSuffix mat-icon-button aria-label="search" color="secondary">
+    <mat-icon class="white-icon">search</mat-icon>
+  </button>
+</div>
