@@ -11,7 +11,12 @@
     <app-filter (onApplyFilter)="applyFilter($event)"></app-filter>
   </div>
 
-  <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)" rowHeight="270px" >
+  <div *ngIf="isFiltered && !!dataSourcePaged" class="no-results">
+    <app-no-results></app-no-results>
+  </div>
+
+
+  <mat-grid-list *ngIf="dataSource.length" [cols]="breakpoint" (window:resize)="onResize($event)" rowHeight="270px" >
     <mat-grid-tile *ngFor="let data of dataSourcePaged">
         <mat-card class="card">
           <mat-card-subtitle><b>{{data.id}}:</b> {{data.title | titlecase}}</mat-card-subtitle>

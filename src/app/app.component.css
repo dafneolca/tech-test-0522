@@ -6,3 +6,8 @@
 .active-route {
   color: var(--bg-pink);
 }
+
+.no-results {
+  color:white;
+  text-align: center;
+}

@@ -23,16 +23,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSelectModule } from '@angular/material/select'
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar'
 
 // Services
-import { PostsService } from './services/posts.service'
+import { GeneralService } from './services/general.service';
 
 // Components
 import { PostsComponent } from './pages/posts/posts.component';
 import { PhotosComponent } from './pages/photos/photos.component';
-import { ImageModalComponent } from './image-modal/image-modal.component';
-import { FilterComponent } from './filter/filter.component';
+import { ImageModalComponent } from './components/image-modal/image-modal.component';
+import { FilterComponent } from './components/filter/filter.component';
+import { NoResultsComponent } from './components/no-results/no-results.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { FilterComponent } from './filter/filter.component';
     PhotosComponent,
     ImageModalComponent,
     FilterComponent,
+    NoResultsComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,9 +63,10 @@ import { FilterComponent } from './filter/filter.component';
     MatIconModule,
     MatGridListModule,
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
   ],
-  providers: [PostsService],
+  providers: [GeneralService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

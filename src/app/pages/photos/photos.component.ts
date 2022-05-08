@@ -1,11 +1,13 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { PhotosService } from '../../services/photos.service';
-import { Photo } from './photo.interface';
-import { ImageModalComponent } from '../../image-modal/image-modal.component';
+import { GeneralService } from '../../services/general.service';
+import { Photo } from '../../interfaces/photo.interface';
+import { ImageModalComponent } from '../../components/image-modal/image-modal.component';
 
 export interface SortOptions {
   value: string,
@@ -25,12 +27,14 @@ export class PhotosComponent implements AfterViewInit {
 
   dataSource: Photo[] = [];
   dataSourcePaged: Photo[] = [];
+
+  isFiltered: boolean = false;
   
   // Pagination
   dataSize: number;
   length: number = 0;
-  pageSize: number = 50;
-  pageSizeOptions: number[] = [10, 50, 100, 150];
+  pageSize: number = 12;
+  pageSizeOptions: number[] = [12, 30, 90, 120];
 
   // For responsive style
   breakpoint: number = 3;
@@ -41,19 +45,27 @@ export class PhotosComponent implements AfterViewInit {
     {value: 'clear', viewValue: 'Clear'},
   ];
 
-  constructor(private photosService: PhotosService, public dialog: MatDialog) { }
+  constructor(
+    private generalService: GeneralService,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) { }
 
   ngAfterViewInit(){
     this.getData();
-    this.breakpoint = (window.innerWidth <= 800) ? 1 : 3;
+    setTimeout(()=> this.breakpoint = (window.innerWidth <= 800) ? 1 : 3, 0)
   }
 
   getData(){
-    this.photosService.getPhotos().subscribe((photos: Photo[])=> {
+    this.generalService.getPhotos().subscribe((photos: Photo[])=> {
       this.dataSource = photos;
       this.length = this.dataSource.length
       this.dataSize = photos.length;
-      this.dataSourcePaged = this.dataSource.slice(0, 50);
+      this.dataSourcePaged = this.getPaginatedData(this.dataSource)
+      this.pageSizeOptions = [...this.pageSizeOptions, this.dataSize];
+    }, 
+    (err) => {
+      this.openSnackBar(`${err.status} - ${err.name}`, 'X')
     })
   }
 
@@ -83,6 +95,7 @@ export class PhotosComponent implements AfterViewInit {
 
   applyFilter(filterVal){
     if (!filterVal){
+      this.isFiltered = false;
       return this.getData();
     }
     const filterValue = filterVal;
@@ -91,6 +104,7 @@ export class PhotosComponent implements AfterViewInit {
     })
     this.dataSource = newData;
     this.dataSourcePaged = this.getPaginatedData(this.dataSource);
+    this.isFiltered = true;
   }
 
   selectedValue(event){
@@ -114,6 +128,14 @@ export class PhotosComponent implements AfterViewInit {
   }
 
   getPaginatedData(dataArr){
-    return dataArr.slice(0, 50);
+    return dataArr.slice(0, this.pageSize);
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['mat-toolbar', 'mat-warn']
+    });
   }
 }

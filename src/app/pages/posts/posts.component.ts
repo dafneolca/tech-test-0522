@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { PostsService } from '../../services/posts.service';
-import { Post } from './post.interface';
+import { GeneralService } from '../../services/general.service';
+import { Post } from '../../interfaces/post.interface';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -16,6 +16,8 @@ export class PostsComponent implements AfterViewInit {
   displayedColumns: string[] = ['userId', 'id', 'title'];
   dataSource: MatTableDataSource<Post> = new MatTableDataSource<Post>();
 
+  isFiltered: boolean = false;
+
   // Pagination
   dataSize: number;
   pageSize: number = 10;
@@ -24,23 +26,25 @@ export class PostsComponent implements AfterViewInit {
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public postsService: PostsService) { }
+  constructor(public generalService: GeneralService) { }
 
   ngAfterViewInit() {
     this.getData();
   }
 
   getData(){
-    this.postsService.getPosts().subscribe((posts: Post[])=> {
+    this.generalService.getPosts().subscribe((posts: Post[])=> {
       this.dataSource = new MatTableDataSource(posts);
       this.dataSource.sort = this.sort;
       this.dataSize = posts.length;
       this.dataSource.paginator = this.paginator;
+      this.isFiltered =  false;
     })
   }
 
   applyFilter(filterVal){
     this.dataSource.filter = filterVal.trim().toLowerCase();
+    this.isFiltered =  true;
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

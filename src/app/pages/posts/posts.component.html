@@ -1,8 +1,11 @@
 <div class="main">
 <app-filter (onApplyFilter)="applyFilter($event)"></app-filter>
 
-  <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 table">
+<div *ngIf="!dataSource.filteredData.length && isFiltered" class="no-results">
+  <app-no-results></app-no-results>
+</div>
 
+  <table *ngIf="dataSource.filteredData.length" mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8 table">
     <ng-container matColumnDef="userId" class="minWidth">
       <th mat-header-cell mat-sort-header *matHeaderCellDef> User ID </th>
       <td mat-cell *matCellDef="let element"> 
