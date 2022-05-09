@@ -10,7 +10,7 @@ import { Post } from '../interfaces/post.interface';
 })
 
 export class GeneralService {
-  url: string = 'https://jsonplaceholder.typicode.com/'; //photos / posts
+  url: string = 'https://jsonplaceholder.typicode.com/';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -21,7 +21,6 @@ export class GeneralService {
   constructor(private httpClient: HttpClient) {}
 
   getPhotos(): Observable<Photo[]> {
-    // return this.httpClient.get<Photo[]>(this.url + 'photos').pipe(retry(1), catchError(this.handleError));
     return this.httpClient.get<Photo[]>(this.url + 'photos').pipe(retry(1));
   }
 
