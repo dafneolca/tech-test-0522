@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { GeneralService } from '../../services/general.service';
-import { Post } from '../../interfaces/post.interface';
+import { Post } from '../../models/post.model';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';

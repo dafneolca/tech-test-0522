@@ -1,13 +1,28 @@
+import { getAllPhotos } from '../../store/photos.selectors';
+import { AppState } from '../../store/reducers/index';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Photo } from '../../models/photo.model';
+import { GeneralService } from '../../services/general.service';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { GeneralService } from '../../services/general.service';
-import { Photo } from '../../interfaces/photo.interface';
 import { ImageModalComponent } from '../../components/image-modal/image-modal.component';
+
+/////////////////
+// import { AfterViewInit, Component, ViewChild } from '@angular/core';
+
+// import { MatPaginator } from '@angular/material/paginator';
+// import { MatSort } from '@angular/material/sort';
+// import { MatDialog } from '@angular/material/dialog';
+// import { MatSnackBar } from '@angular/material/snack-bar';
+
+// import { GeneralService } from '../../services/general.service';
+// import { Photo } from '../../models/photo.model';
+
 
 export interface SortOptions {
   value: string,
@@ -22,11 +37,18 @@ export interface SortOptions {
 
 export class PhotosComponent implements AfterViewInit {
 
+
+  photos$: Observable<Photo[]>;
+  photosPaged$: Photo[] = [];
+
+  // ABOVE IS ALL NEW
+
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  dataSource: Photo[] = [];
-  dataSourcePaged: Photo[] = [];
+  // dataSource: Photo[] = [];
+  // dataSourcePaged: Photo[] = [];
+
 
   isFiltered: boolean = false;
   
@@ -48,7 +70,8 @@ export class PhotosComponent implements AfterViewInit {
   constructor(
     private generalService: GeneralService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private store: Store<AppState>
   ) { }
 
   ngAfterViewInit(){
@@ -57,16 +80,21 @@ export class PhotosComponent implements AfterViewInit {
   }
 
   getData(){
-    this.generalService.getPhotos().subscribe((photos: Photo[])=> {
-      this.dataSource = photos;
-      this.length = this.dataSource.length
-      this.dataSize = photos.length;
-      this.dataSourcePaged = this.getPaginatedData(this.dataSource)
-      this.pageSizeOptions = [...this.pageSizeOptions, this.dataSize];
-    }, 
-    (err) => {
-      this.openSnackBar(`${err.status} - ${err.name}`, 'X')
-    })
+    this.photos$ = this.store.select(getAllPhotos);
+    console.log('this.photos: ', this.photos$)
+
+    this.photos$.subscribe(res => console.log('res', res))
+    // this.photosPaged$ = this.getPaginatedData(this.photos$);
+    // this.generalService.getPhotos().subscribe((photos: Photo[])=> {
+    //   this.dataSource = photos;
+    //   this.length = this.dataSource.length
+    //   this.dataSize = photos.length;
+    //   this.dataSourcePaged = this.getPaginatedData(this.dataSource)
+    //   this.pageSizeOptions = [...this.pageSizeOptions, this.dataSize];
+    // }, 
+    // (err) => {
+    //   this.openSnackBar(`${err.status} - ${err.name}`, 'X')
+    // })
   }
 
   // Pagination
@@ -76,7 +104,7 @@ export class PhotosComponent implements AfterViewInit {
     if(endIndex > this.length){
       endIndex = this.length;
     }
-    this.dataSourcePaged = this.dataSource.slice(startIndex, endIndex);
+    // this.dataSourcePaged = this.dataSource.slice(startIndex, endIndex);
   }
 
   // Responsive size
@@ -99,11 +127,11 @@ export class PhotosComponent implements AfterViewInit {
       return this.getData();
     }
     const filterValue = filterVal;
-    const newData = this.dataSource.filter((photo)=>{
-       return photo.title.includes(filterValue)
-    })
-    this.dataSource = newData;
-    this.dataSourcePaged = this.getPaginatedData(this.dataSource);
+    // const newData = this.dataSource.filter((photo)=>{
+    //    return photo.title.includes(filterValue)
+    // })
+    // this.dataSource = newData;
+    // this.dataSourcePaged = this.getPaginatedData(this.dataSource);
     this.isFiltered = true;
   }
 
@@ -113,18 +141,18 @@ export class PhotosComponent implements AfterViewInit {
 
   onSort(sortType?){
     let sorted;
-    switch (sortType) {
-      case 'id':
-        sorted = this.dataSource.sort((a, b) => (a.id < b.id) ? -1 : 1)
-        this.dataSourcePaged = this.getPaginatedData(sorted);
-        break;
-      case 'title':
-        sorted = this.dataSource.sort((a, b) => (a.title < b.title) ? -1 : 1)
-        this.dataSourcePaged = this.getPaginatedData(sorted);
-        break;
-      default:
-        this.getData();
-    }
+    // switch (sortType) {
+    //   case 'id':
+    //     sorted = this.dataSource.sort((a, b) => (a.id < b.id) ? -1 : 1)
+    //     this.dataSourcePaged = this.getPaginatedData(sorted);
+    //     break;
+    //   case 'title':
+    //     sorted = this.dataSource.sort((a, b) => (a.title < b.title) ? -1 : 1)
+    //     this.dataSourcePaged = this.getPaginatedData(sorted);
+    //     break;
+    //   default:
+    //     this.getData();
+    // }
   }
 
   getPaginatedData(dataArr){

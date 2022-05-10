@@ -35,6 +35,10 @@ import { PhotosComponent } from './pages/photos/photos.component';
 import { ImageModalComponent } from './components/image-modal/image-modal.component';
 import { FilterComponent } from './components/filter/filter.component';
 import { NoResultsComponent } from './components/no-results/no-results.component';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './store/reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -64,7 +68,14 @@ import { NoResultsComponent } from './components/no-results/no-results.component
     MatGridListModule,
     MatDialogModule,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    StoreModule.forRoot(reducers, { metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+      }
+     }),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [GeneralService],
   bootstrap: [AppComponent]
